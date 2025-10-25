@@ -163,7 +163,16 @@ static const HID_Report_ItemTypedef prop_y =
 
 static const HID_Report_ItemTypedef prop_wheel =
 {
-
+  mouse_report_data + 3U,
+  8,     /*size*/
+  0,     /*shift*/
+ 0,     /*count (only for array items)*/
+  1,     /*signed?*/
+0,     /*min value read can return*/
+0xFFFF,/*max value read can return*/
+0,     /*min vale device can report*/
+0xFFFF,/*max value device can report*/
+1      /*resolution*/
 };
 /**
   * @}
@@ -253,7 +262,7 @@ static USBH_StatusTypeDef USBH_HID_MouseDecode(USBH_HandleTypeDef *phost)
     /*Decode report */
     mouse_info.x = (uint8_t)HID_ReadItem((HID_Report_ItemTypedef *) &prop_x, 0U);
     mouse_info.y = (uint8_t)HID_ReadItem((HID_Report_ItemTypedef *) &prop_y, 0U);
-
+    mouse_info.wheel = (uint8_t)HID_ReadItem((HID_Report_ItemTypedef *) &prop_y, 0U);
     mouse_info.buttons[0] = (uint8_t)HID_ReadItem((HID_Report_ItemTypedef *) &prop_b1, 0U);
     mouse_info.buttons[1] = (uint8_t)HID_ReadItem((HID_Report_ItemTypedef *) &prop_b2, 0U);
     mouse_info.buttons[2] = (uint8_t)HID_ReadItem((HID_Report_ItemTypedef *) &prop_b3, 0U);

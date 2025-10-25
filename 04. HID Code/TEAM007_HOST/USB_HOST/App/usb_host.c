@@ -25,8 +25,6 @@
 #include "usbh_hid.h"
 
 /* USER CODE BEGIN Includes */
-#include "user_hid_mouse.h"
-#include "com.h"
 #include "usart.h"
 /* USER CODE END Includes */
 
@@ -72,19 +70,15 @@ void USBH_HID_EventCallback(USBH_HandleTypeDef *phost)
     {
       HID_MOUSE_Info_TypeDef *mouse_info;
       mouse_info = USBH_HID_GetMouseInfo(phost);
-      uint8_t mousebuffer[7];
+      uint8_t mousebuffer[5];
       mousebuffer[0] = 0x02;
       mousebuffer[1] = (mouse_info->buttons[0] << 0) |
                        (mouse_info->buttons[1] << 1) |
                        (mouse_info->buttons[2] << 2);
       mousebuffer[2] = (mouse_info->x);
       mousebuffer[3] = (mouse_info->y);
-      for (int i = 2; i < 7;i++)
-      {
-         mousebuffer[i] = mouse_report_data[i];
-       }
-      HAL_UART_Transmit(&huart2,mousebuffer,7,0xff);
-
+      mousebuffer[4] = (mouse_info->wheel);
+      HAL_UART_Transmit(&huart2,mousebuffer,5,0xff);
     }
     break;
 
