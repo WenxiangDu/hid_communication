@@ -100,45 +100,77 @@ __ALIGN_BEGIN static uint8_t CUSTOM_HID_ReportDesc_FS[USBD_CUSTOM_HID_REPORT_DES
   0x09, 0x01,       //   Usage (Pointer)
   0xA1, 0x00,       //   Collection (Physical)
 
-  // --- Buttons: 5 bits + 3 bits padding ---
-  0x05, 0x09,       //     Usage Page (Button)
-  0x19, 0x01,       //     Usage Minimum (Button 1)
-  0x29, 0x05,       //     Usage Maximum (Button 5)
-  0x15, 0x00,       //     Logical Minimum (0)
-  0x25, 0x01,       //     Logical Maximum (1)
-  0x95, 0x05,       //     Report Count (5)
-  0x75, 0x01,       //     Report Size (1)
-  0x81, 0x02,       //     Input (Data,Var,Abs)  // 按键用“绝对”语义
-  0x95, 0x01,       //     Report Count (1)
-  0x75, 0x03,       //     Report Size (3)
-  0x81, 0x01,       //     Input (Const,Array,Abs) // 3bit 填充，对应抓包里的 "Padding: 00"
+  // ----- Buttons (3 bits) -----
+  0x05, 0x09,        //     Usage Page (Button)
+  0x19, 0x01,        //     Usage Minimum (Button 1)
+  0x29, 0x03,        //     Usage Maximum (Button 3)
+  0x15, 0x00,        //     Logical Minimum (0)
+  0x25, 0x01,        //     Logical Maximum (1)
+  0x95, 0x03,        //     Report Count (3)        ; 3 buttons
+  0x75, 0x01,        //     Report Size (1)        ; 1 bit each
+  0x81, 0x02,        //     Input (Data,Var,Abs)   ; button states
 
-  // --- X/Y: 16-bit signed, relative ---
-  0x05, 0x01,       //     Usage Page (Generic Desktop)
-  0x09, 0x30,       //     Usage (X)
-  0x09, 0x31,       //     Usage (Y)
-  0x16, 0x00, 0x80, //     Logical Minimum (-32768)
-  0x26, 0xFF, 0x7F, //     Logical Maximum (32767)
-  0x75, 0x10,       //     Report Size (16)
-  0x95, 0x02,       //     Report Count (2)
-  0x81, 0x06,       //     Input (Data,Var,Rel)
+  // ----- Padding to align to next byte -----
+  0x95, 0x01,        //     Report Count (1)
+  0x75, 0x05,        //     Report Size (5)
+  0x81, 0x01,        //     Input (Const,Array,Abs); padding bits
 
-  // --- Wheel: 8-bit signed, relative ---
-  0x09, 0x38,       //     Usage (Wheel)
-  0x15, 0x81,       //     Logical Minimum (-127)
-  0x25, 0x7F,       //     Logical Maximum (127)
-  0x75, 0x08,       //     Report Size (8)
-  0x95, 0x01,       //     Report Count (1)
-  0x81, 0x06,       //     Input (Data,Var,Rel)
+  // ----- X, Y movement -----
+  0x05, 0x01,        //     Usage Page (Generic Desktop)
+  0x09, 0x30,        //     Usage (X)
+  0x09, 0x31,        //     Usage (Y)
+  0x15, 0x81,        //     Logical Minimum (-127)
+  0x25, 0x7F,        //     Logical Maximum (127)
+  0x75, 0x08,        //     Report Size (8)
+  0x95, 0x02,        //     Report Count (2)       ; X, Y
+  0x81, 0x06,        //     Input (Data,Var,Rel)   ; relative movement
 
-  // --- Horizontal scroll (AC Pan): 8-bit signed, relative ---
-  0x05, 0x0C,       //     Usage Page (Consumer)
-  0x0A, 0x38, 0x02, //     Usage (AC Pan)
-  0x15, 0x81,       //     Logical Minimum (-127)
-  0x25, 0x7F,       //     Logical Maximum (127)
-  0x75, 0x08,       //     Report Size (8)
-  0x95, 0x01,       //     Report Count (1)
-  0x81, 0x06,       //     Input (Data,Var,Rel)
+  // ----- Wheel (vertical scroll) -----
+  0x09, 0x38,        //     Usage (Wheel)
+  0x15, 0x81,        //     Logical Minimum (-127)
+  0x25, 0x7F,        //     Logical Maximum (127)
+  0x75, 0x08,        //     Report Size (8)
+  0x95, 0x01,        //     Report Count (1)       ; wheel
+  0x81, 0x06,        //     Input (Data,Var,Rel)   ; relative wheel
+  // // --- Buttons: 5 bits + 3 bits padding ---
+  // 0x05, 0x09,       //     Usage Page (Button)
+  // 0x19, 0x01,       //     Usage Minimum (Button 1)
+  // 0x29, 0x05,       //     Usage Maximum (Button 5)
+  // 0x15, 0x00,       //     Logical Minimum (0)
+  // 0x25, 0x01,       //     Logical Maximum (1)
+  // 0x95, 0x05,       //     Report Count (5)
+  // 0x75, 0x01,       //     Report Size (1)
+  // 0x81, 0x02,       //     Input (Data,Var,Abs)  // 按键用“绝对”语义
+  // 0x95, 0x01,       //     Report Count (1)
+  // 0x75, 0x03,       //     Report Size (3)
+  // 0x81, 0x01,       //     Input (Const,Array,Abs) // 3bit 填充，对应抓包里的 "Padding: 00"
+  //
+  // // --- X/Y: 16-bit signed, relative ---
+  // 0x05, 0x01,       //     Usage Page (Generic Desktop)
+  // 0x09, 0x30,       //     Usage (X)
+  // 0x09, 0x31,       //     Usage (Y)
+  // 0x16, 0x00, 0x80, //     Logical Minimum (-32768)
+  // 0x26, 0xFF, 0x7F, //     Logical Maximum (32767)
+  // 0x75, 0x10,       //     Report Size (16)
+  // 0x95, 0x02,       //     Report Count (2)
+  // 0x81, 0x06,       //     Input (Data,Var,Rel)
+  //
+  // // --- Wheel: 8-bit signed, relative ---
+  // 0x09, 0x38,       //     Usage (Wheel)
+  // 0x15, 0x81,       //     Logical Minimum (-127)
+  // 0x25, 0x7F,       //     Logical Maximum (127)
+  // 0x75, 0x08,       //     Report Size (8)
+  // 0x95, 0x01,       //     Report Count (1)
+  // 0x81, 0x06,       //     Input (Data,Var,Rel)
+  //
+  // // --- Horizontal scroll (AC Pan): 8-bit signed, relative ---
+  // 0x05, 0x0C,       //     Usage Page (Consumer)
+  // 0x0A, 0x38, 0x02, //     Usage (AC Pan)
+  // 0x15, 0x81,       //     Logical Minimum (-127)
+  // 0x25, 0x7F,       //     Logical Maximum (127)
+  // 0x75, 0x08,       //     Report Size (8)
+  // 0x95, 0x01,       //     Report Count (1)
+  // 0x81, 0x06,       //     Input (Data,Var,Rel)
 
   0xC0,0xC0,             //   End Collection (Physical)
 

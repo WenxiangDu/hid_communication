@@ -72,7 +72,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
     if (Rx_data == 0x02)
     {
       Rx_data = 0;
-      HAL_UART_Receive_IT(&huart2,Rx_buffer,6);
+      HAL_UART_Receive_IT(&huart2,Rx_buffer,4);
       Rx_flag = 1;
     }
     else if(Rx_flag == 1)
@@ -151,11 +151,14 @@ int main(void)
     if (Rx_flag == 2)
     {
       mouse_buffer[0] = 0x01;
-      for (uint8_t i = 1; i < 7; i++)
+      for (uint8_t i = 1; i < 5; i++)
       {
         mouse_buffer[i] = Rx_buffer[i-1];
       }
+      mouse_buffer[5] = 0x00;
+      mouse_buffer[6] = 0x00;
       mouse_buffer[7] = 0x00;
+      mouse_buffer[8] = 0x00;
       USBD_CUSTOM_HID_SendReport(&hUsbDeviceFS, &mouse_buffer[0],9);
       Rx_flag = 0;
     }
