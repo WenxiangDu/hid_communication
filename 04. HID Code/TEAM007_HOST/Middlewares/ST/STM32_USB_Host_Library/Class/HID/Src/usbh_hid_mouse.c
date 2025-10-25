@@ -262,7 +262,7 @@ static USBH_StatusTypeDef USBH_HID_MouseDecode(USBH_HandleTypeDef *phost)
     /*Decode report */
     mouse_info.x = (uint8_t)HID_ReadItem((HID_Report_ItemTypedef *) &prop_x, 0U);
     mouse_info.y = (uint8_t)HID_ReadItem((HID_Report_ItemTypedef *) &prop_y, 0U);
-    mouse_info.wheel = (uint8_t)HID_ReadItem((HID_Report_ItemTypedef *) &prop_y, 0U);
+    mouse_info.wheel = (uint8_t)HID_ReadItem((HID_Report_ItemTypedef *) &prop_wheel, 0U);
     mouse_info.buttons[0] = (uint8_t)HID_ReadItem((HID_Report_ItemTypedef *) &prop_b1, 0U);
     mouse_info.buttons[1] = (uint8_t)HID_ReadItem((HID_Report_ItemTypedef *) &prop_b2, 0U);
     mouse_info.buttons[2] = (uint8_t)HID_ReadItem((HID_Report_ItemTypedef *) &prop_b3, 0U);
